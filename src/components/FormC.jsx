@@ -1,18 +1,37 @@
 
 import { Button, Form, Input, Flex, InputNumber } from 'antd';
 import { EyeFilled } from '@ant-design/icons'
+import { useState } from 'react';
 
-const onFinish = (values) => {
-  console.log('Success:', values);
-};
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
 
 
 const FormC = () => {
   
+  const [inputValues, setInputValues] = useState({
+    name: '',
+    day: '',
+    month: ''
+  });
+
+
+
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
   
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const allInputsFilled = Object.values(inputValues).every(value => value.trim() !== '');
+
   return (
   <Form
     name="basic"
@@ -48,7 +67,10 @@ const FormC = () => {
         ]}
         
       >
-        <Input placeholder= 'Nombre' />
+        <Input
+        placeholder= 'Nombre'
+        onChange={handleInputChange}
+        />
       </Form.Item>
 
       <Form.Item
@@ -63,7 +85,10 @@ const FormC = () => {
         <InputNumber
         min={1}
         max={31}
-        placeholder='Día'/>
+        name='day'
+        placeholder='Día'
+        onChange={handleInputChange}
+        />
       </Form.Item>
 
       <Form.Item
@@ -79,7 +104,10 @@ const FormC = () => {
           },
         ]}
       >
-        <Input placeholder= 'Mes' />
+        <Input
+        placeholder= 'Mes'
+        onChange={handleInputChange}
+        />
       </Form.Item>
     </Flex>
       <Form.Item
@@ -89,7 +117,7 @@ const FormC = () => {
         }}
       >
         {
-          !onFinish
+          allInputsFilled
           ?
           <Button
           type="primary"
@@ -97,7 +125,7 @@ const FormC = () => {
           shape="round"
           icon={<EyeFilled />}
           style={{marginRight: '200px'}}
-          disabled
+          
           >
           Previsualizar
         </Button>
@@ -108,12 +136,14 @@ const FormC = () => {
           shape="round"
           icon={<EyeFilled />}
           style={{marginRight: '200px'}}
+          disabled
           >
           Previsualizar
         </Button>
         }        
       </Form.Item>
   </Form>
+  // todo: hacer que funcione el disabled en todos los campos
 )
 };
 export default FormC;
