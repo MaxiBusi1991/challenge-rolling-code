@@ -10,6 +10,7 @@ const UploadC = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const canvasRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imageFinished, setImageFinished] = useState({})
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -48,7 +49,6 @@ const UploadC = () => {
     },
   };
 
-  const [imageFinished, setImageFinished] = useState({})
 
   const combineImages = () => {
     const canvas = canvasRef.current;
@@ -84,7 +84,10 @@ const UploadC = () => {
         ctx.fillText('    i++;', 480, 650);
         ctx.fillText('  }', 480, 680);
         ctx.fillText('}', 480, 710);
-
+        
+        // creo la variable para guardar la URL generada en la img desde el canvas para luego guardarla en el estado imageFinished
+        const imageData = canvas.toDataURL('image/png');
+        setImageFinished(imageData);
         // Habilitar el botón de descarga
         message.success('Imágenes combinadas con éxito. Ahora puedes descargar.');
       };
@@ -95,6 +98,8 @@ const UploadC = () => {
 
     // Asignar el src de la imagen del usuario después de asignar onload
     userImage.src = previewUrl;
+    // setImageFinished(userImage.src)
+
   };
   
   const downloadImage = () => {
@@ -103,9 +108,9 @@ const UploadC = () => {
     link.download = 'imagen-combinada.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
-    setImageFinished(link)
-    console.log(imageFinished)
   };
+  
+
 
   return (
     <Flex align="center" vertical>
@@ -132,9 +137,7 @@ const UploadC = () => {
                   Combinar con plantilla y texto
                 </Button>
                 <canvas ref={canvasRef} style={{ display: 'none' }} />
-                <Button onClick={downloadImage} style={{ marginTop: '10px' }}>
-                  Descargar imagen combinada
-              </Button>
+                
               <Button
                 type="primary"
                 htmlType="submit"
@@ -150,12 +153,16 @@ const UploadC = () => {
                 title="Basic Modal"
                 open={isModalOpen}
                 onOk={handleOk}
-                onCancel={handleCancel}>
+                onCancel={handleCancel}
+                >
                 <img
                   src={imageFinished}
                   alt='image-preview'
                   style={{width: '400px'}}
                 />
+                <Button onClick={downloadImage} style={{ marginTop: '10px' }}>
+                  Descargar imagen combinada
+              </Button>
               </Modal>
             </Flex>
           )}
