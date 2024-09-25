@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 const FormC = () => {
 
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -46,26 +45,26 @@ const FormC = () => {
 
   return (
     <>
-    <Form
-      form={form}
-      name="basic"
-      labelCol={{
-        span: 8,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
-      style={{
-        maxWidth: 600,
-      }}
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      onValuesChange={onValuesChange}
-      autoComplete="off"
-    >
+      <Form
+        form={form}
+        name="basic"
+        labelCol={{
+          span: 8,
+        }}
+        wrapperCol={{
+          span: 16,
+        }}
+        style={{
+          maxWidth: 600,
+        }}
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        onValuesChange={onValuesChange}
+        autoComplete="off"
+      >
       <Flex align="center" style={{ marginTop: '30px' }}>
         <Form.Item
           style={{ marginLeft: '70px' }}
