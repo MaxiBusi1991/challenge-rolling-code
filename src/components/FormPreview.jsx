@@ -1,19 +1,8 @@
-import { Button, Form, Input, Flex, InputNumber, Modal } from 'antd';
+import { Button, Form, Input, Flex, InputNumber } from 'antd';
 import { EyeFilled } from '@ant-design/icons';
 import { useState } from 'react';
 
-const FormC = () => {
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+const FormPreview = ({onSendData}) => {
 
   const [form] = Form.useForm();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -35,7 +24,7 @@ const FormC = () => {
   };
 
   const onFinish = (values) => {
-    console.log('Success:', values);
+    onSendData(values);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -120,27 +109,15 @@ const FormC = () => {
           htmlType="submit"
           shape="round"
           icon={<EyeFilled />}
-          style={{ marginRight: '200px' }}
+          style={{ marginRight: '175px' }}
           disabled={isButtonDisabled}
-          onClick={showModal}
         >
-          Previsualizar
+          Cargar texto
         </Button>
       </Form.Item>
     </Form>
-
-    <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-    <p>{nameData}</p>
-    <p>{dayData}</p>
-    <p>{monthData}</p>
-    {/* <img
-      src={previewUrl}
-      alt="Vista previa"
-      style={{ width: '300px', marginTop: '10px' }}
-    /> */}
-    </Modal>
   </>  
   );
 };
 
-export default FormC;
+export default FormPreview;

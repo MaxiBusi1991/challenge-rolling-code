@@ -1,11 +1,11 @@
 import './App.css'
-import TabsC from './components/TabsC'
+import Header from './components/Header'
 
 function App() {
 
   return (
     <>
-      <TabsC/>
+      <Header/>
     </>
   )
 }

@@ -2,17 +2,21 @@ import { useState, useRef } from 'react';
 import { InboxOutlined, EyeFilled, DownloadOutlined } from '@ant-design/icons';
 import { message, Upload, Flex, Button, Modal, Layout } from 'antd';
 import templateImage from '../assets/template_birthday.png'; // Importa la imagen de la plantilla
-import FormC from './FormC';
+import FormPreview from './FormPreview';
 const { Dragger } = Upload;
 
-const UploadC = () => {
+const Uploader = () => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const canvasRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageFinished, setImageFinished] = useState({});
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [dataForm, setDataForm] = useState({});
+  const [dataForm, setDataForm] = useState({
+    name: '',
+    day: '',
+    month: '',
+  });
 
   // funcion para recibir datos de componente hijo y guardarlo en dataForm
   const handleDataFromChild = (childData) => {
@@ -20,6 +24,10 @@ const UploadC = () => {
     console.log(dataForm)
   };
 
+  const handleClick = () => {
+    showModal();
+    handleDataFromChild();
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -60,12 +68,13 @@ const UploadC = () => {
   };
 
 
-  const combineImages = () => {
+  const combineImages = (dataForm) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
     const userImage = new Image();
     const templateImg = new Image();
+
 
     // Asignar primero el evento onload
     userImage.onload = () => {
@@ -94,6 +103,13 @@ const UploadC = () => {
         ctx.fillText('    i++;', 480, 650);
         ctx.fillText('  }', 480, 680);
         ctx.fillText('}', 480, 710);
+
+        // Agregar los datos personalizados del formulario `dataForm`
+        ctx.font = '50px Arial';
+        ctx.fillStyle = 'black';  
+        ctx.fillText(`${dataForm.name}`, 200, 1200); // Ajusta la posición y tamaño según prefieras
+        ctx.fillText(`${dataForm.day}`, 200, 1200);
+        ctx.fillText(`${dataForm.month}`, 200, 1200);
         
         // creo la variable para guardar la URL generada en la img desde el canvas para luego guardarla en el estado imageFinished
         const imageData = canvas.toDataURL('image/png');
@@ -142,7 +158,7 @@ const UploadC = () => {
               <img
                 src={previewUrl}
                 alt={file.name}
-                style={{ maxWidth: '100%', height: 'auto', objectFit: 'cover' }}
+                style={{ maxWidth: '25%', height: 'auto', objectFit: 'cover' }}
               />
               <Button onClick={combineImages} style={{ marginTop: '10px' }}>
                   Combinar con plantilla y texto
@@ -157,7 +173,7 @@ const UploadC = () => {
                 shape="round"
                 icon={<EyeFilled />}
                 style={{ marginTop: '15px' }}
-                onClick={showModal}
+                onClick={handleClick}
                 disabled={isButtonDisabled}
               >
                 Previsualizar
@@ -203,12 +219,13 @@ const UploadC = () => {
         </div>
       )}
       {file
-      ? <FormC onSendData={handleDataFromChild} />
+      ? <FormPreview onSendData={handleDataFromChild} onPreviewImage={combineImages} />
       : <p style={{ marginTop: '25px' }}>
         Aún no has seleccionado nada
         </p>}
+
     </Flex>
   );
 };
 
-export default UploadC;
+export default Uploader;

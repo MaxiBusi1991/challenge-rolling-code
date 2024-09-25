@@ -1,29 +1,29 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import { StarFilled, GiftFilled } from '@ant-design/icons'
-import UploadC from './UploadC';
+import Uploader from './Uploader';
 
 const items = [
   {
     key: '1',
     label: 'Placa de Cumple',
-    children: <UploadC/>,
+    children: <Uploader/>,
     icon: <StarFilled />
   },
   {
     key: '2',
     label: 'Placa de Bienvenida',
-    children: <UploadC/>,
+    children: <Uploader/>,
     icon: <GiftFilled />,
     disabled: true,
   },
 ];
 
-const TabsC = () =>{
+const Header = () =>{
   
 return(
   <>
     <Tabs defaultActiveKey="1" items={items} />;
   </>
 )}
-export default TabsC;
+export default Header;
